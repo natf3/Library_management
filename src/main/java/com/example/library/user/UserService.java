@@ -1,31 +1,31 @@
 package com.example.library.user;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final static String USER_NOT_FOUND_MSG = "user not found";
 
     @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public List<User> getUsers(){
         return userRepository.findAll();
-    }
-
-    public void addNewUser(User user) {
-        Optional<User> userOptional = userRepository.findUserByUserName(user.getUserName());
-
-        if(userOptional.isPresent()){
-            throw new IllegalStateException("Username taken");
-        }
-        userRepository.save(user);
     }
 
     public void deleteUser(Long userId) {
@@ -36,4 +36,11 @@ public class UserService {
         }
         userRepository.deleteById(userId);
     }
+
+    public void signUpUser(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        userRepository.save(user);
+    }
+
 }

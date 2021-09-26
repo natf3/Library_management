@@ -1,5 +1,6 @@
 package com.example.library.user;
 
+import com.example.library.book.Book;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,12 +26,6 @@ public class UserController {
                 .findFirst()
                 .orElseThrow(() -> new IllegalStateException());
     }
-
-    @PostMapping(path = "register")
-    public void registerNewUser(@RequestBody User user){
-        userService.addNewUser(user);
-    }
-
 
     @DeleteMapping(path = "{userId}")
     public void deleteUser(@PathVariable("userId") Long userId){
