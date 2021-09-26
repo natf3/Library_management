@@ -19,10 +19,18 @@ public class UserController {
         return userService.getUsers();
     }
 
+    @GetMapping(path = "/{userId}")
+    public User getUser(@PathVariable("userId") Long userId){
+        return userService.getUsers().stream().filter(user -> userId.equals(user.getId()))
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException());
+    }
+
     @PostMapping(path = "register")
     public void registerNewUser(@RequestBody User user){
         userService.addNewUser(user);
     }
+
 
     @DeleteMapping(path = "{userId}")
     public void deleteUser(@PathVariable("userId") Long userId){

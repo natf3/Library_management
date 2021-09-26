@@ -3,7 +3,6 @@ package com.example.library.user;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "users")
 public class User {
 
     @Id
@@ -11,8 +10,8 @@ public class User {
     @Column(name = "id", updatable = false, nullable = false)
     private Long id;
 
-    @Column(name = "email", nullable = false)
-    private String email;
+    @Column(name = "userName", nullable = false)
+    private String userName;
 
     @Column(name = "password", nullable = false)
     private String password;
@@ -20,13 +19,19 @@ public class User {
     @Column(name = "role", nullable = false)
     private UserRole role;
 
-    public User(String email, String password, UserRole role) {
-        this.email = email;
+    public User(String userName, String password, UserRole role) {
+        this.userName = userName;
         this.password = password;
         this.role = role;
     }
 
-    public User() {
+    protected User() {
+    }
+
+    public String toString() {
+        return String.format(
+                "User[id=%d, username='%s', role='%s']",
+                id, userName, role);
     }
 
     public Long getId() {
@@ -37,12 +42,12 @@ public class User {
         this.id = id;
     }
 
-    public String getEmail() {
-        return email;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getPassword() {
