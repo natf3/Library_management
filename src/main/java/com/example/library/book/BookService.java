@@ -17,6 +17,10 @@ public class BookService {
         return bookRepository.findAll();
     }
 
+    public List<Book> getFreeBooks(){
+        return bookRepository.findAllByBookState(BookState.FREE);
+    }
+
     public void addNewBook(Book book){
         bookRepository.save(book);
     }

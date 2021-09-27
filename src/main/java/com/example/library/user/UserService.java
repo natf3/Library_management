@@ -1,6 +1,5 @@
 package com.example.library.user;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -16,7 +15,7 @@ public class UserService implements UserDetailsService{
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final static String USER_NOT_FOUND_MSG = "user not found";
+    private final static String USER_NOT_FOUND_MSG = "User not found";
 
     @Autowired
     public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
@@ -38,13 +37,19 @@ public class UserService implements UserDetailsService{
     }
 
     public void signUpUser(User user) {
+        boolean userExists = userRepository
+                .findUserByUsername(user.getUsername())
+                .isPresent();
+
+        if (userExists) {
+            throw new IllegalStateException("Username already taken");
+        }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         userRepository.save(user);
     }
 
-    public UserDetails loadUserByUsername(String username)
-            throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username){
         return userRepository.findUserByUsername(username)
                 .orElseThrow(() ->
                         new UsernameNotFoundException(

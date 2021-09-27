@@ -3,7 +3,7 @@ package com.example.library.registration;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(path = "api/register")
+@RequestMapping(path = "register")
 public class RegistrationController {
 
     private final RegistrationService registrationService;

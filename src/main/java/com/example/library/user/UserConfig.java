@@ -19,8 +19,8 @@ public class UserConfig {
     @Bean
     CommandLineRunner commandLineRunner2(UserRepository userRepository){
         return args -> {
-            User admin = new User ("admin@gmail.com", passwordEncoder.encode("haslo123"),UserRole.ADMIN);
-            User user = new User ("user@gmail.com", passwordEncoder.encode("haslo123"), UserRole.USER);
+            User admin = new User ("admin", passwordEncoder.encode("admin"),UserRole.ADMIN);
+            User user = new User ("user", passwordEncoder.encode("user"), UserRole.USER);
 
             userRepository.saveAll(List.of(admin, user));
         };

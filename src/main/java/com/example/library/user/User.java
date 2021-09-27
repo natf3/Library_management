@@ -19,8 +19,16 @@ import java.util.Collections;
 @Entity
 public class User implements UserDetails {
 
+    @SequenceGenerator(
+            name = "user_sequence",
+            sequenceName = "user_sequence",
+            allocationSize = 1
+    )
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "user_sequence"
+    )
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", updatable = false, nullable = false)
     private Long id;
 
@@ -29,6 +37,8 @@ public class User implements UserDetails {
 
     @Column(name = "password", nullable = false)
     private String password;
+
+    private int loanLimit;
 
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
@@ -57,7 +67,6 @@ public class User implements UserDetails {
     public String getUsername() {
         return username;
     }
-
 
     @Override
     public boolean isAccountNonExpired() {

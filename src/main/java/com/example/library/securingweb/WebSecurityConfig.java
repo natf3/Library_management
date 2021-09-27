@@ -26,13 +26,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/", "/api/book", "/api/register").permitAll()
-//                .antMatchers("/api/user", "/api/book/*").hasRole(String.valueOf(UserRole.ADMIN))
-//                .antMatchers().hasRole(String.valueOf(UserRole.USER))
-//                .antMatchers(HttpMethod.DELETE, "/api/book/*").hasAuthority(String.valueOf(UserRole.ADMIN))
+                .antMatchers("/",  "/register", "/login").permitAll()
+                .antMatchers("/users", "/users/**", "/books").hasAuthority(UserRole.ADMIN.name())
+                .antMatchers(HttpMethod.DELETE, "/books/**", "/users/**").hasAuthority(UserRole.ADMIN.name())
+                .antMatchers(HttpMethod.POST, "/books/**", "/users/**").hasAuthority(UserRole.ADMIN.name())
+                .antMatchers("/books/free", "/loans", "/loans/**").hasAuthority(UserRole.USER.name())
+                .antMatchers(HttpMethod.DELETE, "/loans/**").hasAuthority(UserRole.USER.name())
+                .antMatchers(HttpMethod.POST, "/loans/**").hasAuthority(UserRole.USER.name())
                 .anyRequest()
                 .authenticated().and()
                 .formLogin();
+
     }
 
     @Override

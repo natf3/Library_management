@@ -8,26 +8,33 @@ import javax.persistence.*;
 @Entity
 public class Loan {
 
+    @SequenceGenerator(
+            name = "loan_sequence",
+            sequenceName = "loan_sequence",
+            allocationSize = 1
+    )
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "loan_sequence"
+    )
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", updatable = false, nullable = false)
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private User user_id;
+    @JoinColumn(name = "user", referencedColumnName = "id")
+    private User user;
 
     @ManyToOne
-    @JoinColumn(name = "book_id", referencedColumnName = "id")
-    private Book book_id;
+    @JoinColumn(name = "book", referencedColumnName = "id")
+    private Book book;
 
     protected Loan(){
     }
 
-    public Loan(Long id, User user_id, Book book_id) {
-        this.id = id;
-        this.user_id = user_id;
-        this.book_id = book_id;
+    public Loan(User user, Book book) {
+        this.user = user;
+        this.book = book;
     }
 
     public Long getId() {
@@ -38,19 +45,19 @@ public class Loan {
         this.id = id;
     }
 
-    public User getUser_id() {
-        return user_id;
+    public User getUser() {
+        return user;
     }
 
-    public void setUser_id(User user_id) {
-        this.user_id = user_id;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public Book getBook_id() {
-        return book_id;
+    public Book getBook() {
+        return book;
     }
 
-    public void setBook_id(Book book_id) {
-        this.book_id = book_id;
+    public void setBook(Book book) {
+        this.book = book;
     }
 }

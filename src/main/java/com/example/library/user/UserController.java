@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "api/user")
+@RequestMapping(path = "users")
 public class UserController {
 
     private final UserService userService;
@@ -20,7 +20,7 @@ public class UserController {
         return userService.getUsers();
     }
 
-    @GetMapping(path = "/{userId}")
+    @GetMapping(path = "{userId}")
     public User getUser(@PathVariable("userId") Long userId){
         return userService.getUsers().stream().filter(user -> userId.equals(user.getId()))
                 .findFirst()

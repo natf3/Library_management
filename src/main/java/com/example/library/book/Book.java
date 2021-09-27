@@ -1,14 +1,20 @@
 package com.example.library.book;
 
-import com.example.library.user.UserRole;
-
 import javax.persistence.*;
 
 @Entity
 public class Book {
 
+    @SequenceGenerator(
+            name = "book_sequence",
+            sequenceName = "book_sequence",
+            allocationSize = 1
+    )
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "book_sequence"
+    )
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", updatable = false, nullable = false)
     private Long id;
 
