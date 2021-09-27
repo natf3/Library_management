@@ -1,1 +1,1 @@
-# Library management - recruitment task
+# Library management
