@@ -1,68 +1,82 @@
 package com.example.library.user;
 
-import javax.persistence.*;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import javax.persistence.*;
+import java.util.Collection;
+import java.util.Collections;
+
+@Getter
+@Setter
+@EqualsAndHashCode
+@NoArgsConstructor
 @Entity
-public class User {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", updatable = false, nullable = false)
     private Long id;
 
-    @Column(name = "userName", nullable = false)
-    private String userName;
+    @Column(name = "username", nullable = false)
+    private String username;
 
     @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "role", nullable = false)
-    private UserRole role;
+    @Enumerated(EnumType.STRING)
+    private UserRole userRole;
+    private Boolean locked = false;
+    private Boolean enabled = true;
 
-    public User(String userName, String password, UserRole role) {
-        this.userName = userName;
+    public User(String username, String password, UserRole userRole) {
+        this.username = username;
         this.password = password;
-        this.role = role;
+        this.userRole = userRole;
     }
 
-    protected User() {
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        SimpleGrantedAuthority authority =
+                new SimpleGrantedAuthority(userRole.name());
+        return Collections.singletonList(authority);
     }
 
-    public String toString() {
-        return String.format(
-                "User[id=%d, username='%s', role='%s']",
-                id, userName, role);
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
+    @Override
     public String getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    @Override
+    public String getUsername() {
+        return username;
     }
 
-    public UserRole getRole() {
-        return role;
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
     }
 
-    public void setRole(UserRole role) {
-        this.role = role;
+    @Override
+    public boolean isAccountNonLocked() {
+        return !locked;
     }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return enabled;
+    }
+
 }
