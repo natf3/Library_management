@@ -1,4 +1,4 @@
-package com.example.library.loans;
+package com.example.library.loan;
 
 import com.example.library.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;

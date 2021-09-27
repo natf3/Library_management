@@ -1,4 +1,4 @@
-package com.example.library.loans;
+package com.example.library.loan;
 
 import org.springframework.web.bind.annotation.*;
 
